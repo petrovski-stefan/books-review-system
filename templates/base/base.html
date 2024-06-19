@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    {#    <link rel="icon" type="image/x-icon"#}
+    {#          href="https://i.fbcd.co/products/resized/resized-750-500/ae2d64e634f5beaa6f0e867d529ece28f0504e9e24fc4d5e0d6fd21f0a05df7f.webp">#}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        #content {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+{#TODO: using .row and columns#}
+<nav class="navbar navbar-expand-lg bg-black opacity-75">
+    <div class="container-fluid d-flex">
+        <div class="d-flex justify-content-between">
+            <h4>
+                <a href="{% url 'index' %}"
+                   class="text-white link-underline link-underline-opacity-0 fst-italic">Litera</a>
+            </h4>
+
+            <form method="get" class="d-flex  justify-content-between" action="{% url 'search_books' %}">
+                <input type="text" name="query" placeholder="Search for a book or an author..." class="text-start w-100"
+                       value="{% block search_text %}{% endblock %}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="navbar-nav">
+            <a class="nav-link text-white" href="{% url 'index' %}">Home</a>
+            <a class="nav-link text-white" href="{% url 'list_books' %}">Books</a>
+            <a class="nav-link text-white" href="{% url 'list_authors' %}">Authors</a>
+        </div>
+
+        <div id="user-info" class="d-flex justify-content-center">
+            <p class="text-white">
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="text-white">Log in</a>
+                {% else %}
+                    <a href="{% url 'user_profile' request.user.id %}">Hello, {{ request.user }}</a>
+                    {% if request.user.is_superuser %}
+                        (S)
+                    {% else %}
+                        (B)
+                    {% endif %}
+                    <a href="{% url 'logout' %}" class="text-white">Log out</a>
+                {% endif %}
+            </p>
+        </div>
+
+    </div>
+</nav>
+
+<div class="bg-dark d-flex justify-content-center pt-4" id="content">
+    {% block content %}
+
+    {% endblock %}
+</div>
+
+
+</body>
+</html>

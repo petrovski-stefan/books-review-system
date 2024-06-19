@@ -1,0 +1,12 @@
+<div class="card" style="width: 18rem; height: 18rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ book.title }}</h5>
+        <p>{{ book.author.name }}</p>
+
+        <a href="{% url 'edit_book' book.id %}">Edit book</a>
+        <form method="post" action="{% url 'delete_book' book.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete the book with id: {{ book.id }}</button>
+        </form>
+    </div>
+</div>

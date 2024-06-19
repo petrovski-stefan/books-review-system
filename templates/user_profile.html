@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Profile - Litera
+{% endblock %}
+
+{% block content %}
+    <div class="text-white">
+        <a href="">{{ user_profile }}</a>
+        <br>
+        {#        <a href="{% url 'edit_user_profile'  request.user.id %}">Edit profile</a>#}
+        <br>
+
+
+        <p>Top 3 books reviewed: </p>
+        {% for book in books_reviewed_by_user %}
+            {% include 'parts/book_card.html' %}
+        {% endfor %}
+
+        <p>Your last 10 reviews:</p>
+        {% for review in reviews %}
+            {% include 'parts/review_card.html' %}
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

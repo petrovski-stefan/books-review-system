@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Books - Litera
+{% endblock %}
+
+
+{% block content %}
+    <div class="d-grid">
+        {% for book in books %}
+            {% include 'parts/book_card.html' %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

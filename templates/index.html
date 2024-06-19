@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    Litera
+{% endblock %}
+{% block content %}
+
+    <div class="d-flex flex-column gap-4">
+        <h1 class="d-flex justify-content-center text-white fst-italic">Welcome to Litera</h1>
+        <h5 class="d-flex justify-content-center text-white fst-italic">Write a review for your favourite book!</h5>
+        {% if not request.user.is_authenticated %}
+            <div class="d-flex justify-content-center">
+                <button><a href="{% url 'register' %}">Register</a></button>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

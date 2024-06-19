@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    {{ author.name }} - Litera
+{% endblock %}
+{% block content %}
+    <h2>{{ author.name }}</h2>
+    <p>Age: {{ author.age }}</p>
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>{{ book.title }}</li>
+
+            {% endfor %}
+        </ul>
+
+    {% else %}
+        <p>There are no books by this author.</p>
+    {% endif %}
+{% endblock %}
+

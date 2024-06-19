@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    Login - Litera
+{% endblock %}
+{% block content %}
+
+    <form method="post" action="{% url 'login' %}"
+          class="text-white d-flex flex-column w-25 gap-2">
+        <h1 class="text-white">Log in</h1>
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" value="{{ username }}">
+        <label>Password</label>
+        <input type="password" name="password" value="{{ password }}">
+
+        <button type="submit">Log in</button>
+        {% if error %}
+            <p class="text-danger">Error with username or password. Try again!</p>
+        {% endif %}
+        <a href="{% url 'register' %}">Don't have an account? Create now!</a>
+    </form>
+
+{% endblock %}

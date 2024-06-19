@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Edit profile - Litera
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'edit_user_profile' request.user.id %}"
+          class="text-white d-flex flex-column w-25 gap-2">
+        <h1>Edit user profile</h1>
+        {% csrf_token %}
+        <label>Age</label>
+        <input type="number" name="age" value="{{ user_profile.age }}">
+        <label>Country</label>
+        <input type="text" name="country" value="{{ user_profile.country }}">
+
+        <br>
+        <button type="submit">Edit</button>
+    </form>
+{% endblock %}

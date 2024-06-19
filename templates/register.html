@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+{% block title %}
+    Register - Litera
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'register' %}"
+          class="text-white d-flex flex-column w-25 gap-2">
+        <h1>Register</h1>
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" value="{{ username }}">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ email }}">
+        <label>Password</label>
+        <input type="password" name="password" value="{{ password }}">
+        <label>Repeat Password</label>
+        <input type="password" name="repeat_password">
+
+        <br>
+        <button type="submit">Register</button>
+        {% if error %}
+            <p class="text-danger">Passwords do not match. Try again!</p>
+        {% endif %}
+        <a href="{% url 'login' %}">Already have an account? Log in</a>
+    </form>
+
+{% endblock %}
