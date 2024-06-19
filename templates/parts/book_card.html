@@ -1,12 +1,26 @@
 <div class="card" style="width: 18rem; height: 18rem;">
     <div class="card-body">
         <h5 class="card-title">{{ book.title }}</h5>
-        <p>{{ book.author.name }}</p>
+        <p>{{ book.author.name }} ({{ book.year }})</p>
+        <p>{{ book.isbn }}</p>
 
-        <a href="{% url 'edit_book' book.id %}">Edit book</a>
-        <form method="post" action="{% url 'delete_book' book.id %}">
-            {% csrf_token %}
-            <button type="submit">Delete the book with id: {{ book.id }}</button>
-        </form>
+        <p><a href="{% url 'book_details' book.id %}">See all reviews</a></p>
+
+
+        {% if request.user.is_superuser %}
+            <a href="{% url 'edit_book' book.id %}">Edit book</a>
+            <form method="post" action="{% url 'delete_book' book.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete the book with id: {{ book.id }}</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'add_review' book.id %}">
+                {% csrf_token %}
+                <label>Add a review</label>
+                <input name="review" type="text">
+                <button type="submit">Add</button>
+            </form>
+        {% endif %}
+
     </div>
 </div>

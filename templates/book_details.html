@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    {{ book.title }} - Litera
+{% endblock %}
+
+{% block content %}
+    <div class="text-white">
+        title: {{ book.title }}
+        {% for review in reviews %}
+            {% include 'parts/review_card.html' %}
+        {% endfor %}
+        {% if not queried_all_reviews %}
+            <form method="get" action="{% url 'book_details' book.id %}">
+                <input type="hidden" value="{{ reviews_limit }}" name="reviews_limit">
+                <button type="submit">View more</button>
+            </form>
+        {% else %}
+            <button><a href="{% url 'book_details' book.id %}">View less</a></button>
+        {% endif %}
+    </div>
+
+{% endblock %}

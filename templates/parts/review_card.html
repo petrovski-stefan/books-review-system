@@ -1,10 +1,7 @@
 <div class="card" style="width: 25rem; height: 10rem;">
     <div class="card-body">
-        <p><a href="{% url 'user_profile' review.added_by.id %}">{{ review.added_by }}</a></p>
-        <p>{{ review.added_at }}</p>
+        <p><a href="{% url 'user_profile' review.added_by.id %}">{{ review.added_by }}</a> {{ review.added_at }}</p>
+        <p></p>
         <p>{{ review.comment }}</p>
-        <a href="{% url 'edit_book' review.book.id %}">Visit book</a>
-
-
     </div>
 </div>

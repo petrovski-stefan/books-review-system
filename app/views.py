@@ -25,10 +25,10 @@ def list_authors(request: HttpRequest) -> HttpResponse:
 
 def edit_book(request: HttpRequest, book_id: int) -> HttpResponse:
     book: Book = Book.objects.get(id=book_id)
-    if request.method == 'POST':
-        book.title = request.POST['title']
-        book.year = request.POST['year']
-        book.author = request.POST['author']
+    if request.method == "POST":
+        book.title = request.POST["title"]
+        book.year = request.POST["year"]
+        book.author = request.POST["author"]
         book.save()
         return redirect("index")
     return render(request, "edit_book.html", {"book": book})
@@ -42,13 +42,15 @@ def delete_book(request: HttpRequest, book_id: int) -> HttpResponse:
 
 # TODO: fix adding whitespaces in the search form from nowhere
 def search_books(request: HttpRequest) -> HttpResponse:
-    search_text: str = str(request.GET['query'])
+    search_text: str = str(request.GET["query"])
     if search_text == "":
         ctx = {"error": True}
         return render(request, "search_books.html", ctx)
     search_text = search_text.strip(" \n\\s+")
-    books = Book.objects.filter(Q(title__contains=search_text) | Q(author__name__contains=search_text))
-    ctx = {"books": books, "search_text": search_text}
+    books = Book.objects.filter(
+        Q(title__contains=search_text) | Q(author__name__contains=search_text)
+    )
+    ctx = {"books": books, "search-text": search_text}  # type: ignore
     return render(request, "search_books.html", context=ctx)
 
 
@@ -65,8 +67,8 @@ def login_user(request: HttpRequest) -> HttpResponse:
         print(request.session.values())
         return render(request, "login.html")
 
-    username = request.POST['username']
-    password = request.POST['password']
+    username = request.POST["username"]
+    password = request.POST["password"]
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
@@ -85,18 +87,20 @@ def register_user(request: HttpRequest) -> HttpResponse:
     if request.method == "GET":
         return render(request, "register.html")
 
-    username: str = str(request.POST['username'])
-    email: str = str(request.POST['email'])
-    password: str = str(request.POST['password'])
-    repeat_password: str = str(request.POST['repeat_password'])
+    username: str = str(request.POST["username"])
+    email: str = str(request.POST["email"])
+    password: str = str(request.POST["password"])
+    repeat_password: str = str(request.POST["repeat_password"])
 
     ctx: dict[str, str | bool] = {"username": username, "password": password}
 
     if password != repeat_password:
-        ctx['error'] = True
+        ctx["error"] = True
         return render(request, "register.html", ctx)
 
-    new_user = User.objects.create_user(username=username, email=email, password=password)
+    new_user = User.objects.create_user(
+        username=username, email=email, password=password
+    )
     new_user.save()
     UserProfile.objects.create(user=new_user)
     user = authenticate(request, username=username, password=password)
@@ -111,10 +115,14 @@ def register_user(request: HttpRequest) -> HttpResponse:
 def get_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
     user_profile: UserProfile = UserProfile.objects.get(user__id=user_id)
     reviews = Review.objects.filter(added_by__id=user_id)
-    books = Review.objects.filter(added_by__id=user_id).values('book').distinct()
-    books_reviewed_by_user = [Book.objects.get(id=book['book']) for book in books][:3]
+    books = Review.objects.filter(added_by__id=user_id).values("book").distinct()
+    books_reviewed_by_user = [Book.objects.get(id=book["book"]) for book in books][:3]
 
-    ctx = {"user_profile": user_profile, "reviews": reviews, "books_reviewed_by_user": books_reviewed_by_user}
+    ctx = {
+        "user_profile": user_profile,
+        "reviews": reviews,
+        "books_reviewed_by_user": books_reviewed_by_user,
+    }
     return render(request, "user_profile.html", ctx)
 
 
@@ -127,8 +135,36 @@ def edit_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
         ctx = {"user_profile": user_profile}
         return render(request, "edit_user_profile.html", ctx)
 
-    user_profile.age = request.POST['age']
-    user_profile.country = request.POST['country']
+    user_profile.age = request.POST["age"]
+    user_profile.country = request.POST["country"]
     user_profile.save()
     ctx = {"user_profile": user_profile}
     return render(request, "user_profile.html", ctx)
+
+
+def add_review_to_book(request: HttpRequest, book_id: int) -> HttpResponse:
+    review_text = request.POST["review"]
+    book = Book.objects.get(id=book_id)
+    Review.objects.create(book=book, comment=review_text, added_by=request.user).save()
+
+    return redirect("list_books")
+
+
+def get_book_details(request: HttpRequest, book_id: int) -> HttpResponse:
+    REVIEWS_NUM = 2  # TODO: change to 5 after testing
+    book: Book = Book.objects.get(id=book_id)
+    reviews_limit_qs: str | None = request.GET.get("reviews_limit")  # type: ignore
+    reviews_limit: int = REVIEWS_NUM if not reviews_limit_qs else int(reviews_limit_qs)
+    all_reviews: list[Review] = list(
+        Review.objects.filter(book=book_id).order_by("-added_at")
+    )
+    reviews = all_reviews[:reviews_limit]
+
+    ctx = {
+        "book": book,
+        "reviews_limit": reviews_limit + REVIEWS_NUM,  # For the input-field's value
+        "reviews": reviews,
+        "queried_all_reviews": len(reviews) >= len(all_reviews),
+    }
+
+    return render(request, "book_details.html", context=ctx)

@@ -1,7 +1,6 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.contrib.auth.models import User
-from django.utils.translation.template import blankout
 
 
 class Book(models.Model):
@@ -32,8 +31,10 @@ class Review(models.Model):
         to="Review", on_delete=models.CASCADE, null=True, blank=True
     )
 
+    # TODO: Add upvote/down votes
+
     def __str__(self):
-        return f"{self.comment} - {self.book} - {self.added_by} - {self.parent_review}"
+        return f"{self.comment} - {self.book} - {self.added_by} - {self.added_at}"
 
 
 class UserProfile(models.Model):
