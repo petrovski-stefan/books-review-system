@@ -6,7 +6,33 @@
 
 {% block content %}
     <div class="text-white">
-        title: {{ book.title }}
+
+        <div class="d-flex">
+            <div class="me-5">
+{#                TODO#}
+                <img src="" alt="{{ book.title }}">
+            </div>
+            <div>
+                <h3>{{ book.title }}</h3>
+                <p><a href="{% url 'author_info' book.author.id %}">{{ book.author.name }}</a></p>
+                <br>
+                <p>Year released: {{ book.year }}</p>
+                <p>ISBN: {{ book.isbn }}</p>
+                <p>Genre: TODO</p>
+            </div>
+
+
+        </div>
+        <br>
+        <h4>Short description</h4>
+        <div class="container">
+            <div class="row">
+                <p>{{ book.short_description }}</p>
+            </div>
+        </div>
+        <br>
+        <h4>Reviews</h4>
+
         {% for review in reviews %}
             {% include 'parts/review_card.html' %}
         {% endfor %}
@@ -15,6 +41,8 @@
                 <input type="hidden" value="{{ reviews_limit }}" name="reviews_limit">
                 <button type="submit">View more</button>
             </form>
+        {% elif no_reviews_present %}
+            <p>Currently, there are no reviews for {{ book.title }}</p>
         {% else %}
             <button><a href="{% url 'book_details' book.id %}">View less</a></button>
         {% endif %}

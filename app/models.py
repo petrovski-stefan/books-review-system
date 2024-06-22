@@ -8,6 +8,7 @@ class Book(models.Model):
     title: models.CharField = models.CharField(max_length=100)
     year: models.IntegerField = models.IntegerField()
     author: models.ForeignKey = models.ForeignKey(to="Author", on_delete=models.CASCADE)
+    short_description: models.TextField = models.TextField()
 
     def __str__(self):
         return f"{self.title} - {self.author} - {self.year}"

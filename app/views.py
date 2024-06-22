@@ -165,6 +165,7 @@ def get_book_details(request: HttpRequest, book_id: int) -> HttpResponse:
         "reviews_limit": reviews_limit + REVIEWS_NUM,  # For the input-field's value
         "reviews": reviews,
         "queried_all_reviews": len(reviews) >= len(all_reviews),
+        "no_reviews_present": len(all_reviews) == 0,
     }
 
     return render(request, "book_details.html", context=ctx)
