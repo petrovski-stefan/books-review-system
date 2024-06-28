@@ -40,17 +40,12 @@ def delete_book(request: HttpRequest, book_id: int) -> HttpResponse:
     return redirect("index")
 
 
-# TODO: fix adding whitespaces in the search form from nowhere
 def search_books(request: HttpRequest) -> HttpResponse:
     search_text: str = str(request.GET["query"])
-    if search_text == "":
-        ctx = {"error": True}
-        return render(request, "search_books.html", ctx)
-    search_text = search_text.strip(" \n\\s+")
     books = Book.objects.filter(
         Q(title__contains=search_text) | Q(author__name__contains=search_text)
     )
-    ctx = {"books": books, "search-text": search_text}  # type: ignore
+    ctx = {"books": books, "search_text": search_text}  # type: ignore
     return render(request, "search_books.html", context=ctx)
 
 
@@ -129,7 +124,6 @@ def get_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
 @login_required
 def edit_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
     user_profile: UserProfile = UserProfile.objects.get(user__id=user_id)
-    user = User.objects.get(id=user_id)
 
     if request.method == "GET":
         ctx = {"user_profile": user_profile}

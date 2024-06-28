@@ -2,9 +2,6 @@
 {% block title %}
     {{ search_text }} - Litera
 {% endblock %}
-{% block search_text %}
-    {{ search_text }}
-{% endblock %}
 {% block content %}
     {% for book in books %}
         {% include 'parts/book_card.html' %}

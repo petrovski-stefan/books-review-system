@@ -28,8 +28,8 @@
             </h4>
 
             <form method="get" class="d-flex  justify-content-between" action="{% url 'search_books' %}">
-                <input type="text" name="query" placeholder="Search for a book or an author..." class="text-start w-100"
-                       value="{% block search_text %}{% endblock %}">
+                <input type="text" name="query" placeholder="Search for a book or an author..."
+                       class="text-start w-100" value="{{ search_text }}">
                 <button type="submit">Search</button>
             </form>
         </div>
