@@ -15,7 +15,7 @@
         <input type="email" name="email" value="{{ email }}">
         <label>Password</label>
         <input type="password" name="password" value="{{ password }}">
-        <label>Repeat Password</label>
+        <label>Re-enter password</label>
         <input type="password" name="repeat_password">
 
         <br>
@@ -23,7 +23,8 @@
         {% if error %}
             <p class="text-danger">Passwords do not match. Try again!</p>
         {% endif %}
-        <a href="{% url 'login' %}">Already have an account? Log in</a>
+        <p>Already have an account? <a href="{% url 'login' %}"> Log in</a></p>
+
     </form>
 
 {% endblock %}
