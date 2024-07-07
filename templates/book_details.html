@@ -20,9 +20,9 @@
                 <p>ISBN: {{ book.isbn }}</p>
                 <p>Genres: </p>
                 {% for genre in book.genres.all %}
-                	<a href="{% url '' %}">{{ genre }};</a>
+                    <a href="{% url 'books_by_genre' genre.slug %}">{{ genre }};</a>
                 {% endfor %}
-                
+
             </div>
 
 
@@ -50,6 +50,12 @@
         {% else %}
             <button><a href="{% url 'book_details' book.id %}">View less</a></button>
         {% endif %}
+    
+        <h4>You maybe also be interested in:</h4>
+        {% for similar_book in similar_books %}
+            {% include 'parts/book_card.html'  with book=similar_book %}
+        {% endfor %}
+
     </div>
 
 {% endblock %}

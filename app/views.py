@@ -157,6 +157,10 @@ def get_book_details(request: HttpRequest, book_id: int) -> HttpResponse:
         Review.objects.filter(book=book_id).order_by("-added_at")
     )
     reviews = all_reviews[:reviews_limit]
+    book_genres = book.genres.all()
+    similar_books = (
+        Book.objects.filter(genres__in=book_genres).distinct().exclude(id=book_id)
+    )
 
     ctx = {
         "book": book,
@@ -164,6 +168,7 @@ def get_book_details(request: HttpRequest, book_id: int) -> HttpResponse:
         "reviews": reviews,
         "queried_all_reviews": len(reviews) >= len(all_reviews),
         "no_reviews_present": len(all_reviews) == 0,
+        "similar_books": similar_books,
     }
 
     return render(request, "book_details.html", context=ctx)
