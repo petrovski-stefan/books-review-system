@@ -3,8 +3,19 @@
     {{ search_text }} - Litera
 {% endblock %}
 {% block content %}
-    {% for book in books %}
-        {% include 'parts/book_card.html' %}
-    {% endfor %}
+    {% if error %}
+        <p class="text-white">Can't find anything matching "{{ search_text }}"</p>
+    {% else %}
+        <p class="text-white">Books:</p>
+        {% for book in books %}
+            {% include 'parts/book_card.html' %}
+        {% endfor %}
+        <p class="text-white">Authors:</p>
+        {% for author in authors %}
+            <p class="text-white">{{ author.full_name }}</p>
+        {% endfor %}
+
+    {% endif %}
+
 
 {% endblock %}

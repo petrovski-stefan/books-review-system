@@ -27,7 +27,7 @@
                    class="text-white link-underline link-underline-opacity-0 fst-italic">Litera</a>
             </h4>
 
-            <form method="get" class="d-flex  justify-content-between" action="{% url 'search_books' %}">
+            <form method="get" class="d-flex  justify-content-between" action="{% url 'search' %}">
                 <input type="text" name="query" placeholder="Search for a book or an author..."
                        class="text-start w-100" value="{{ search_text }}">
                 <button type="submit">Search</button>

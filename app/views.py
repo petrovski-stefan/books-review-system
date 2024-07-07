@@ -40,12 +40,16 @@ def delete_book(request: HttpRequest, book_id: int) -> HttpResponse:
     return redirect("index")
 
 
-def search_books(request: HttpRequest) -> HttpResponse:
+def search(request: HttpRequest) -> HttpResponse:
     search_text: str = str(request.GET["query"])
+    authors: list[Author] = list(Author.objects.filter(full_name__contains=search_text))
     books = Book.objects.filter(
         Q(title__contains=search_text) | Q(author__full_name__contains=search_text)
     )
-    ctx = {"books": books, "search_text": search_text}  # type: ignore
+
+    ctx = {"books": books, "authors": authors, "search_text": search_text}
+    if len(books) == 0 and len(authors) == 0:
+        ctx["error"] = True  # type: ignore
     return render(request, "search_books.html", context=ctx)
 
 

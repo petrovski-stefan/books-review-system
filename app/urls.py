@@ -14,7 +14,8 @@ urlpatterns = [
     # Author
     path("authors/<int:author_id>", views.get_author_info, name="author_info"),
     path("authors", views.list_authors, name="list_authors"),
-    path("search", views.search_books, name="search_books"),
+    # Search
+    path("search", views.search, name="search"),
     # Review
     path("reviews/book/<int:book_id>/add", views.add_review_to_book, name="add_review"),
     # Auth
