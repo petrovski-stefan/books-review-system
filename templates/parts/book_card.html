@@ -1,7 +1,7 @@
 <div class="card" style="width: 18rem; height: 18rem;">
     <div class="card-body">
         <h5 class="card-title">{{ book.title }}</h5>
-        <p>{{ book.author.name }} ({{ book.year }})</p>
+        <p><a href="{% url 'author_info' book.author.id %}">{{ book.author.full_name }}</a> ({{ book.year }})</p>
         <p>{{ book.isbn }}</p>
 
         <p><a href="{% url 'book_details' book.id %}">See all reviews</a></p>

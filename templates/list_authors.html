@@ -6,4 +6,9 @@
 
 {% block content %}
     <p class="text-white">authors</p>
+    <ul>
+        {% for author in authors %}
+            <li class="text-white">{{ author.full_name }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}

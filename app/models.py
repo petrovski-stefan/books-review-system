@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
@@ -9,17 +11,22 @@ class Book(models.Model):
     year: models.IntegerField = models.IntegerField()
     author: models.ForeignKey = models.ForeignKey(to="Author", on_delete=models.CASCADE)
     short_description: models.TextField = models.TextField()
+    genres: models.ManyToManyField = models.ManyToManyField(to="Genre")
 
     def __str__(self):
         return f"{self.title} - {self.author} - {self.year}"
 
 
 class Author(models.Model):
-    name: models.CharField = models.CharField(max_length=100)
-    age: models.IntegerField = models.IntegerField()
+    full_name: models.CharField = models.CharField(max_length=100)
+    age: models.IntegerField = models.IntegerField()  # possible redundancy
+    short_bio: models.TextField = models.TextField(default="No bio available")
+    birth_date: models.DateField = models.DateField()
+    death_date: models.DateField = models.DateField(null=True, blank=True)
+    website: models.URLField = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.full_name} ({self.age})"
 
 
 class Review(models.Model):
@@ -49,3 +56,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.age} - {self.country}"
+
+
+class Genre(models.Model):
+    name: models.CharField = models.CharField(max_length=100)
+    description: models.TextField = models.TextField()
+    slug: models.SlugField = models.SlugField(max_length=50, unique=True)
+
+    def __str__(self):
+        return f"{self.name}"

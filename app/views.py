@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Book, Author, Review, UserProfile
+from .models import Book, Author, Review, UserProfile, Genre
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -43,7 +43,7 @@ def delete_book(request: HttpRequest, book_id: int) -> HttpResponse:
 def search_books(request: HttpRequest) -> HttpResponse:
     search_text: str = str(request.GET["query"])
     books = Book.objects.filter(
-        Q(title__contains=search_text) | Q(author__name__contains=search_text)
+        Q(title__contains=search_text) | Q(author__full_name__contains=search_text)
     )
     ctx = {"books": books, "search_text": search_text}  # type: ignore
     return render(request, "search_books.html", context=ctx)
@@ -163,3 +163,10 @@ def get_book_details(request: HttpRequest, book_id: int) -> HttpResponse:
     }
 
     return render(request, "book_details.html", context=ctx)
+
+
+def get_books_by_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
+    genre: Genre = Genre.objects.get(slug=genre_slug)
+    books = genre.book_set.all()
+    ctx = {"genre": genre, "books": books}
+    return render(request, "books_by_genre.html", context=ctx)

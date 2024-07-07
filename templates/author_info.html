@@ -1,20 +1,22 @@
 {% extends 'base/base.html' %}
 {% block title %}
-    {{ author.name }} - Litera
+    {{ author.full_name }} - Litera
 {% endblock %}
+
 {% block content %}
-    <h2>{{ author.name }}</h2>
-    <p>Age: {{ author.age }}</p>
+    <h2 class="text-white">{{ author.full_name }}</h2>
+    <p class="text-white">Age: {{ author.age }}</p>
     {% if books %}
         <ul>
             {% for book in books %}
-                <li>{{ book.title }}</li>
+                <li class="text-white">{{ book.title }}</li>
 
             {% endfor %}
         </ul>
 
     {% else %}
-        <p>There are no books by this author.</p>
+        <p class="text-white">There are no books by this author.</p>
     {% endif %}
 {% endblock %}
+
 

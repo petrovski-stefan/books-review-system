@@ -9,7 +9,7 @@
 
         <div class="d-flex">
             <div class="me-5">
-{#                TODO#}
+                {#                TODO#}
                 <img src="" alt="{{ book.title }}">
             </div>
             <div>
@@ -18,7 +18,11 @@
                 <br>
                 <p>Year released: {{ book.year }}</p>
                 <p>ISBN: {{ book.isbn }}</p>
-                <p>Genre: TODO</p>
+                <p>Genres: </p>
+                {% for genre in book.genres.all %}
+                	<a href="{% url '' %}">{{ genre }};</a>
+                {% endfor %}
+                
             </div>
 
 
