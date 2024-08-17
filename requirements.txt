@@ -3,3 +3,4 @@ django-stubs
 mypy
 flake8
 pre-commit
+pillow

@@ -1,5 +1,3 @@
-import random
-
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
@@ -11,6 +9,9 @@ class Book(models.Model):
     year: models.IntegerField = models.IntegerField()
     author: models.ForeignKey = models.ForeignKey(to="Author", on_delete=models.CASCADE)
     short_description: models.TextField = models.TextField()
+    image: models.ImageField = models.ImageField(
+        upload_to="books/", null=True, blank=True
+    )
     genres: models.ManyToManyField = models.ManyToManyField(to="Genre")
 
     def __str__(self):

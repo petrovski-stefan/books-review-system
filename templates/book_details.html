@@ -9,8 +9,7 @@
 
         <div class="d-flex">
             <div class="me-5">
-                {#                TODO#}
-                <img src="" alt="{{ book.title }}">
+                <img src="{{ book.image.url }}" alt="{{ book.title }}">
             </div>
             <div>
                 <h3>{{ book.title }}</h3>
@@ -50,7 +49,7 @@
         {% else %}
             <button><a href="{% url 'book_details' book.id %}">View less</a></button>
         {% endif %}
-    
+
         <h4>You maybe also be interested in:</h4>
         {% for similar_book in similar_books %}
             {% include 'parts/book_card.html'  with book=similar_book %}

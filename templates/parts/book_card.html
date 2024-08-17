@@ -3,8 +3,12 @@
         <h5 class="card-title">{{ book.title }}</h5>
         <p><a href="{% url 'author_info' book.author.id %}">{{ book.author.full_name }}</a> ({{ book.year }})</p>
         <p>{{ book.isbn }}</p>
+        <div class="d-flex">
+            <div><img class="w-50 h-50" src="{{ book.image.url }}" alt="{{ book.title }}"></div>
 
-        <p><a href="{% url 'book_details' book.id %}">See all reviews</a></p>
+            <p><a href="{% url 'book_details' book.id %}">See all reviews</a></p>
+        </div>
+
 
 
         {% if request.user.is_superuser %}
