@@ -21,7 +21,7 @@
             <form method="post" action="{% url 'add_review' book.id %}">
                 {% csrf_token %}
                 <label>Add a review</label>
-                <input name="review" type="text">
+                <input name="review" type="text" required>
                 <button type="submit">Add</button>
             </form>
         {% endif %}
