@@ -29,7 +29,7 @@
 
             <form method="get" class="d-flex  justify-content-between" action="{% url 'search' %}">
                 <input type="text" name="query" placeholder="Search for a book or an author..."
-                       class="text-start w-100" value="{{ search_text }}">
+                       class="text-start w-100" value="{{ search_text }}" required>
                 <button type="submit">Search</button>
             </form>
         </div>
