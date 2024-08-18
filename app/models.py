@@ -47,13 +47,18 @@ class Review(models.Model):
 
 
 class UserProfile(models.Model):
-    user: models.OneToOneField = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user: models.OneToOneField = models.OneToOneField(
+        to=User, on_delete=models.CASCADE, related_name="profile"
+    )
     age: models.PositiveIntegerField = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99)], null=True, blank=True
     )
     country: models.CharField = models.CharField(max_length=100, null=True, blank=True)
-
-    # TODO: add an image field and configure media files
+    profile_picture: models.ImageField = models.ImageField(
+        upload_to="profile_picture",
+        blank=True,
+        default="../static/profile_picture/default.png",
+    )
 
     def __str__(self):
         return f"{self.user} - {self.age} - {self.country}"

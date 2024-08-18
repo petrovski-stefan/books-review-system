@@ -6,6 +6,7 @@
 
 {% block content %}
     <div class="text-white">
+        <img src="{{ user_profile.profile_picture.url }}">
         <a href="">{{ user_profile }}</a>
         <br>
         {#        <a href="{% url 'edit_user_profile'  request.user.id %}">Edit profile</a>#}

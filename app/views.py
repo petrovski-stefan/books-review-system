@@ -90,10 +90,15 @@ def register_user(request: HttpRequest) -> HttpResponse:
     email: str = str(request.POST["email"])
     password: str = str(request.POST["password"])
     repeat_password: str = str(request.POST["repeat_password"])
+    image_name: str = str(request.POST["image"])
 
     ctx: dict[str, str | bool] = {"username": username, "password": password}
-
+    print(request.FILES)
     if password != repeat_password:
+        ctx["error"] = True
+        return render(request, "register.html", ctx)
+
+    if image_name.split(".")[-1] not in ["jpg", "jpeg", "png"]:
         ctx["error"] = True
         return render(request, "register.html", ctx)
 
