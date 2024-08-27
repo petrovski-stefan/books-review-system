@@ -4,27 +4,27 @@
 {% endblock %}
 
 {% block content %}
-
-    <form method="post" action="{% url 'register' %}"
-          class="text-white d-flex flex-column w-25 gap-2">
-        <h1>Register</h1>
+    <form enctype="multipart/form-data" method="post" action="{% url 'register' %}"
+          class="text-white d-flex flex-column gap-2 w-25"
+          id="registration-form">
         {% csrf_token %}
-        <label>Username</label>
-        <input type="text" name="username" value="{{ username }}">
-        <label>Email</label>
-        <input type="email" name="email" value="{{ email }}">
-        <label>Password</label>
-        <input type="password" name="password" value="{{ password }}">
-        <label>Re-enter password</label>
-        <input type="password" name="repeat_password">
+        <h1>Register</h1>
+        {% for error in form.non_field_errors.as_data.0 %}
+            <p class="text-warning">{{ error }}</p>
+        {% endfor %}
 
-        <br>
-        <button type="submit">Register</button>
-        {% if error %}
-            <p class="text-danger">Passwords do not match. Try again!</p>
-        {% endif %}
-        <p>Already have an account? <a href="{% url 'login' %}"> Log in</a></p>
 
+        {% for field in form %}
+            {% for error in field.errors %}
+                <p class="text-warning">{{ error }}</p>
+            {% endfor %}
+
+            <div>{{ field.label }}</div>
+            <div>{{ field }}</div>
+        {% endfor %}
+        <button type="submit">Create an account!</button>
+        <p class="text-center">Already have an account? <a href="{% url 'login' %}"> Log in</a></p>
     </form>
+
 
 {% endblock %}

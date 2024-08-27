@@ -5,6 +5,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Book, Author, Review, UserProfile, Genre
+from .forms import RegistrationForm
+from .services import create_user_profile, create_user
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -83,37 +85,24 @@ def logout_user(request: HttpRequest) -> HttpResponse:
 
 
 def register_user(request: HttpRequest) -> HttpResponse:
-    if request.method == "GET":
-        return render(request, "register.html")
+    if request.method == "POST":
+        form = RegistrationForm(request.POST, request.FILES)
 
-    username: str = str(request.POST["username"])
-    email: str = str(request.POST["email"])
-    password: str = str(request.POST["password"])
-    repeat_password: str = str(request.POST["repeat_password"])
-    image_name: str = str(request.POST["image"])
+        if form.is_valid():
+            username: str = str(form.cleaned_data["username"])
+            email: str = str(form.cleaned_data["email"])
+            password: str = str(form.cleaned_data["password"])
+            profile_picture = form.cleaned_data["profile_picture"]
+            new_user = create_user(username, email, password)
+            create_user_profile(new_user, profile_picture)
 
-    ctx: dict[str, str | bool] = {"username": username, "password": password}
-    print(request.FILES)
-    if password != repeat_password:
-        ctx["error"] = True
-        return render(request, "register.html", ctx)
+            return redirect("login")
 
-    if image_name.split(".")[-1] not in ["jpg", "jpeg", "png"]:
-        ctx["error"] = True
-        return render(request, "register.html", ctx)
+        print(form.errors)
+        return render(request, "register.html", {"form": form})
 
-    new_user = User.objects.create_user(
-        username=username, email=email, password=password
-    )
-    new_user.save()
-    UserProfile.objects.create(user=new_user)
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect("index")
-    else:
-        ctx = {"username": username, "password": password, "error": True}
-        return render(request, "login.html", ctx)
+    form = RegistrationForm()
+    return render(request, "register.html", {"form": form})
 
 
 def get_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:

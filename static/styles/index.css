@@ -9,3 +9,6 @@
     border-radius: 50%;
 }
 
+#registration-form input {
+    width: 100%;
+}
