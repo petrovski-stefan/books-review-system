@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Book, Author, Review, UserProfile, Genre
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 from .services import create_user_profile, create_user
 
 
@@ -64,19 +64,18 @@ def get_author_info(request: HttpRequest, author_id: int) -> HttpResponse:
 
 # TODO: use session to store the next url. Read it at GET, pop it on POST
 def login_user(request: HttpRequest) -> HttpResponse:
-    if request.method == "GET":
-        print(request.session.values())
-        return render(request, "login.html")
+    if request.method == "POST":
+        form = LoginForm(request.POST)
 
-    username = request.POST["username"]
-    password = request.POST["password"]
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect("index")
-    else:
-        ctx = {"username": username, "password": password, "error": True}
-        return render(request, "login.html", ctx)
+        if form.is_valid():
+            login(request, form.cleaned_data["user"])
+            return redirect("index")
+
+        return render(request, "login.html", {"form": form})
+
+    print(request.session.values())
+    form = LoginForm()
+    return render(request, "login.html", {"form": form})
 
 
 def logout_user(request: HttpRequest) -> HttpResponse:

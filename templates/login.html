@@ -5,19 +5,28 @@
 {% block content %}
 
     <form method="post" action="{% url 'login' %}"
-          class="text-white d-flex flex-column w-25 gap-2">
-        <h1 class="text-white">Log in</h1>
-        {% csrf_token %}
-        <label>Username</label>
-        <input type="text" name="username" value="{{ username }}">
-        <label>Password</label>
-        <input type="password" name="password" value="{{ password }}">
+          class="text-white d-flex flex-column gap-2 w-25"
+            id="login-form"
+    >
+    <h1>Log in</h1>
+    {% csrf_token %}
 
-        <button type="submit">Log in</button>
-        {% if error %}
-            <p class="text-danger">Error with username or password. Try again!</p>
-        {% endif %}
-        <a href="{% url 'register' %}">Don't have an account? Create now!</a>
+    {% for error in form.non_field_errors.as_data.0 %}
+        <p class="text-warning">{{ error }}</p>
+    {% endfor %}
+
+
+    {% for field in form %}
+        {% for error in field.errors %}
+            <p class="text-warning">{{ error }}</p>
+        {% endfor %}
+
+        <div>{{ field.label }}</div>
+        <div>{{ field }}</div>
+    {% endfor %}
+
+    <button type="submit">Log in</button>
+    <a href="{% url 'register' %}">Don't have an account? Create now!</a>
     </form>
 
 {% endblock %}
