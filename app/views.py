@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Book, Author, Review, UserProfile, Genre
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, UserProfileForm
 from .services import create_user_profile, create_user
 
 
@@ -110,27 +110,33 @@ def get_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
     books = Review.objects.filter(added_by__id=user_id).values("book").distinct()
     books_reviewed_by_user = [Book.objects.get(id=book["book"]) for book in books][:3]
 
+    is_logged_user = user_id == request.user.id
+
     ctx = {
         "user_profile": user_profile,
         "reviews": reviews,
         "books_reviewed_by_user": books_reviewed_by_user,
+        "is_logged_user": is_logged_user,
     }
     return render(request, "user_profile.html", ctx)
 
 
 @login_required
-def edit_user_profile(request: HttpRequest, user_id: int) -> HttpResponse:
-    user_profile: UserProfile = UserProfile.objects.get(user__id=user_id)
+def edit_user_profile(request: HttpRequest) -> HttpResponse:
+    user_profile: UserProfile = UserProfile.objects.get(user=request.user)
 
-    if request.method == "GET":
-        ctx = {"user_profile": user_profile}
-        return render(request, "edit_user_profile.html", ctx)
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
 
-    user_profile.age = request.POST["age"]
-    user_profile.country = request.POST["country"]
-    user_profile.save()
-    ctx = {"user_profile": user_profile}
-    return render(request, "user_profile.html", ctx)
+        if form.is_valid():
+            form.save()
+
+            return redirect("edit_user_profile")
+
+        return render(request, "edit_user_profile.html", {"form": form})
+
+    form = UserProfileForm(instance=user_profile)
+    return render(request, "edit_user_profile.html", {"form": form})
 
 
 def add_review_to_book(request: HttpRequest, book_id: int) -> HttpResponse:

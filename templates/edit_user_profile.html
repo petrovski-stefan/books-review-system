@@ -5,16 +5,29 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'edit_user_profile' request.user.id %}"
-          class="text-white d-flex flex-column w-25 gap-2">
-        <h1>Edit user profile</h1>
+    <form method="post" action="{% url 'edit_user_profile'%}"
+          class="text-white d-flex flex-column w-25 gap-2"
+    id="edit-profile-form">
+        
         {% csrf_token %}
-        <label>Age</label>
-        <input type="number" name="age" value="{{ user_profile.age }}">
-        <label>Country</label>
-        <input type="text" name="country" value="{{ user_profile.country }}">
+        
+        <h1>Edit user profile</h1>
+        {% for error in form.non_field_errors.as_data.0 %}
+            <p class="text-warning">{{ error }}</p>
+        {% endfor %}
 
-        <br>
+
+        {% for field in form %}
+            {% for error in field.errors %}
+                <p class="text-warning">{{ error }}</p>
+            {% endfor %}
+
+            <div>{{ field.label }}</div>
+            <div>{{ field }}</div>
+        {% endfor %}
+        
+
+        
         <button type="submit">Edit</button>
     </form>
 {% endblock %}

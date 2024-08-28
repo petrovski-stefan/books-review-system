@@ -5,20 +5,39 @@
 {% endblock %}
 
 {% block content %}
-    <div class="text-white">
-        <img src="{{ user_profile.profile_picture.url }}">
-        <a href="">{{ user_profile }}</a>
+    <div class="text-white w-50">
+        <div class="d-flex ">
+            <img id="profile-page-picture" class="w-50" src="{{ user_profile.profile_picture.url }}" alt="profile">
+            <div class="d-flex flex-column w-50 justify-content-center align-items-center">
+                <h2>{{ user_profile.user.username }}</h2>
+                {% if is_logged_user %}
+                    <a href="{% url 'edit_user_profile' %}">Edit profile</a>
+                {% endif %}
+            </div>
+        </div>
         <br>
-        {#        <a href="{% url 'edit_user_profile'  request.user.id %}">Edit profile</a>#}
+        <div>
+            {% if user_profile.age %}
+                <h6>Age</h6>
+                <p>{{ user_profile.age }}</p>
+            {% endif %}
+            {% if user_profile.country %}
+                <h6>Country</h6>
+                <p>{{ user_profile.country }}</p>
+            {% endif %}
+            {% if user_profile.website %}
+                <h6>Website</h6>
+                <p><a href="{{ user_profile.website }}" target="_blank">{{ user_profile.website }}</a></p>
+            {% endif %}
+        </div>
         <br>
-
 
         <p>Top 3 books reviewed: </p>
         {% for book in books_reviewed_by_user %}
             {% include 'parts/book_card.html' %}
         {% endfor %}
-
-        <p>Your last 10 reviews:</p>
+        <br>
+        <p>Last 10 reviews:</p>
         {% for review in reviews %}
             {% include 'parts/review_card.html' %}
         {% endfor %}

@@ -59,6 +59,7 @@ class UserProfile(models.Model):
         blank=True,
         default="../static/profile_picture/default.png",
     )
+    website: models.URLField = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} - {self.age} - {self.country}"

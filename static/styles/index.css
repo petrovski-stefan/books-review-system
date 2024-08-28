@@ -9,6 +9,14 @@
     border-radius: 50%;
 }
 
-#registration-form input, #login-form input {
+#registration-form input, #login-form input, #edit-profile-form input {
     width: 100%;
+}
+
+
+#profile-page-picture {
+    width: 200px;
+    height: 200px;
+    border: 1px solid white;
+    border-radius: 50%;
 }

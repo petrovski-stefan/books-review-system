@@ -6,6 +6,7 @@ from .form_validators import (
     validate_password,
 )
 from django.contrib.auth import authenticate
+from .models import UserProfile
 
 
 class RegistrationForm(forms.Form):
@@ -75,3 +76,9 @@ class LoginForm(forms.Form):
         cleaned_data["user"] = user
 
         return cleaned_data
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ["user"]
