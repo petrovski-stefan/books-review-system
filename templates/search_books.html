@@ -1,21 +1,40 @@
 {% extends 'base/base.html' %}
 {% block title %}
-    {{ search_text }} - Litera
+    {% if not search_text %}
+        Search - Litera
+    {% else %}
+        {{ search_text }} - Litera
+    {% endif %}
 {% endblock %}
 {% block content %}
-    {% if error %}
-        <p class="text-white">Can't find anything matching "{{ search_text }}"</p>
-    {% else %}
-        <p class="text-white">Books:</p>
-        {% for book in books %}
-            {% include 'parts/book_card.html' %}
-        {% endfor %}
-        <p class="text-white">Authors:</p>
-        {% for author in authors %}
-            <p class="text-white">{{ author.full_name }}</p>
-        {% endfor %}
+    <div>
 
-    {% endif %}
+        <form method="get" class="d-flex  justify-content-between" action="{% url 'search' %}">
+            <input type="text" name="query" placeholder="Search for a book or an author..."
+                   class="text-start w-100" value="{{ search_text }}" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if error %}
+            <p class="text-white">Can't find anything matching "{{ search_text }}"</p>
+        {% else %}
+            
+            {% if search_text %}
+                <p class="text-white">Books:</p>
+                {% for book in books %}
+                    {% include 'parts/book_card.html' %}
+                {% endfor %}
+                <p class="text-white">Authors:</p>
+                {% for author in authors %}
+                    <p class="text-white">{{ author.full_name }}</p>
+                {% endfor %}
+            {% endif %}
+
+
+        {% endif %}
+
+
+    </div>
 
 
 {% endblock %}

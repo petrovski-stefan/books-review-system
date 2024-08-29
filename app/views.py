@@ -1,5 +1,4 @@
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import login, logout
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
@@ -44,7 +43,11 @@ def delete_book(request: HttpRequest, book_id: int) -> HttpResponse:
 
 
 def search(request: HttpRequest) -> HttpResponse:
-    search_text: str = str(request.GET["query"])
+    search_text: str | None = request.GET.get(key="query", default=None)  # type: ignore
+
+    if search_text is None:
+        return render(request, "search_books.html")
+
     authors: list[Author] = list(Author.objects.filter(full_name__contains=search_text))
     books = Book.objects.filter(
         Q(title__contains=search_text) | Q(author__full_name__contains=search_text)
@@ -180,3 +183,7 @@ def get_books_by_genre(request: HttpRequest, genre_slug: str) -> HttpResponse:
     books = genre.book_set.all()
     ctx = {"genre": genre, "books": books}
     return render(request, "books_by_genre.html", context=ctx)
+
+
+def get_my_reading_list(request: HttpRequest) -> HttpResponse:
+    return render(request, "my_reading_list.html")

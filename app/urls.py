@@ -25,4 +25,6 @@ urlpatterns = [
     # Profile
     path("user/<int:user_id>", views.get_user_profile, name="user_profile"),
     path("profile/edit", views.edit_user_profile, name="edit_user_profile"),
+    # My reading list
+    path("my-reading-list", views.get_my_reading_list, name="my_reading_list"),
 ]
