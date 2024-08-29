@@ -5,12 +5,18 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post" action="{% url 'edit_user_profile'%}"
+    <form method="post" action="{% url 'edit_user_profile' %}"
           class="text-white d-flex flex-column w-25 gap-2"
-    id="edit-profile-form">
-        
+          id="edit-profile-form">
+
+        {% if messages %}
+            {% for message in messages %}
+                <h5 class="text-success text-center">{{ message }}</h5>
+            {% endfor %}
+        {% endif %}
+
         {% csrf_token %}
-        
+
         <h1>Edit user profile</h1>
         {% for error in form.non_field_errors.as_data.0 %}
             <p class="text-warning">{{ error }}</p>
@@ -25,9 +31,9 @@
             <div>{{ field.label }}</div>
             <div>{{ field }}</div>
         {% endfor %}
-        
 
-        
+
+
         <button type="submit">Edit</button>
     </form>
 {% endblock %}

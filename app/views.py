@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Book, Author, Review, UserProfile, Genre
 from .forms import RegistrationForm, LoginForm, UserProfileForm
 from .services import create_user_profile, create_user
+from django.contrib import messages
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -130,6 +131,7 @@ def edit_user_profile(request: HttpRequest) -> HttpResponse:
 
         if form.is_valid():
             form.save()
+            messages.success(request, "Profile details updated.")
 
             return redirect("edit_user_profile")
 
