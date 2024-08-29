@@ -79,6 +79,8 @@ class LoginForm(forms.Form):
 
 
 class UserProfileForm(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False, widget=forms.widgets.FileInput)
+
     class Meta:
         model = UserProfile
-        exclude = ["user"]
+        fields = ["age", "country", "profile_picture", "website"]
