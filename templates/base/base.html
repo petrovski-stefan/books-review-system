@@ -12,53 +12,63 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="{% static 'styles/index.css' %}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
 
-{#TODO: using .row and columns#}
-<nav class="navbar navbar-expand-lg bg-black opacity-75">
-    <div class="container-fluid d-flex">
-        <div class="d-flex justify-content-between">
-            <h4>
-                <a href="{% url 'index' %}"
-                   class="text-white link-underline link-underline-opacity-0 fst-italic">Litera</a>
-            </h4>
+<nav class="navbar navbar-expand-md navbar-dark bg-black opacity-75 align-items-md-center">
+    <div class="container-md">
+
+        <!-- Logo -->
+        <a href="{% url 'index' %}"
+           class="navbar-brand fst-italic">Litera</a>
+
+        <!-- Dropdown button for the menu on smaller screens -->
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#links-collapse"><span
+                class="navbar-toggler-icon"></span></button>
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse " id="links-collapse">
+            <ul class="navbar-nav ms-auto" id="ul-b">
+                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'list_books' %}">Books</a></li>
+                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'list_authors' %}">Authors</a>
+                </li>
+                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'search' %}">Search</a></li>
 
 
-        </div>
+                <!-- Auth status, reading list and profile picture -->
+                {% if request.user.is_authenticated %}
+                    <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'my_reading_list' %}">Reading
+                        List</a></li>
+                    <li class="d-flex align-items-center">
+                        <a class="nav-link"
+                           href="{% url 'user_profile' request.user.id %}">Hello, {{ request.user }}!</a>
+                    </li>
+                    <li class="d-flex align-items-center my-3 mx-md-3 my-md-0 ">
+                        <a href="{% url 'logout' %}" class="btn btn-dark ">Log out</a>
+                    </li>
 
-        <div class="navbar-nav">
-            <a class="nav-link text-white" href="{% url 'index' %}">Home</a>
-            <a class="nav-link text-white" href="{% url 'list_books' %}">Books</a>
-            <a class="nav-link text-white" href="{% url 'list_authors' %}">Authors</a>
-            <a class="nav-link text-white" href="{% url 'search' %}">Search</a>
-            {% if request.user.is_authenticated %}
-                <a class="nav-link text-white" href="{% url 'my_reading_list' %}">My Reading List</a>
-            {% endif %}
-        </div>
-
-        <div id="user-info" class="d-flex justify-content-center">
-            <p class="text-white">
-                {% if not request.user.is_authenticated %}
-                    <a href="{% url 'login' %}" class="text-white">Log in</a>
-                {% else %}
-                    <a href="{% url 'user_profile' request.user.id %}">Hello, {{ request.user }}</a>
-                    {% if request.user.is_superuser %}
-                        (S)
-                    {% else %}
-                        (B)
+                    {% if  request.user.profile.profile_picture.url %}
+                        <li class="d-flex align-items-center"><img
+                                class="profile-picture-nav" src="{{ request.user.profile.profile_picture.url }}"
+                                alt="profile"></li>
                     {% endif %}
-                    <a href="{% url 'logout' %}" class="text-white">Log out</a>
+                {% else %}
+                    <li class="d-flex align-items-center">
+                        <a href="{% url 'login' %}" class="nav-link">Log in</a></li>
                 {% endif %}
-            </p>
-            {% if  request.user.profile.profile_picture.url %}
-                <img class="profile-picture-nav" src="{{ request.user.profile.profile_picture.url }}" alt="profile">
-            {% endif %}
+
+            </ul>
         </div>
 
     </div>
+
+
 </nav>
 
+
+<!-- Main content -->
 <div class="bg-dark d-flex justify-content-center pt-4" id="content">
     {% block content %}
 
