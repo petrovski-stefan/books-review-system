@@ -29,33 +29,33 @@
 
         <!-- Links -->
         <div class="collapse navbar-collapse " id="links-collapse">
-            <ul class="navbar-nav ms-auto" id="ul-b">
-                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'list_books' %}">Books</a></li>
-                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'list_authors' %}">Authors</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="my-md-auto"><a class="nav-link" href="{% url 'list_books' %}">Books</a></li>
+                <li class="my-md-auto"><a class="nav-link" href="{% url 'list_authors' %}">Authors</a>
                 </li>
-                <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'search' %}">Search</a></li>
+                <li class="my-md-auto"><a class="nav-link" href="{% url 'search' %}">Search</a></li>
 
 
                 <!-- Auth status, reading list and profile picture -->
                 {% if request.user.is_authenticated %}
-                    <li class="d-flex align-items-center"><a class="nav-link" href="{% url 'my_reading_list' %}">Reading
+                    <li class="my-md-auto"><a class="nav-link" href="{% url 'my_reading_list' %}">Reading
                         List</a></li>
-                    <li class="d-flex align-items-center">
+                    <li class="my-md-auto">
                         <a class="nav-link"
                            href="{% url 'user_profile' request.user.id %}">Hello, {{ request.user }}!</a>
                     </li>
-                    <li class="d-flex align-items-center my-3 mx-md-3 my-md-0 ">
+                    <li class="my-3 my-md-auto ms-md-1 me-md-3">
                         <a href="{% url 'logout' %}" class="btn btn-dark ">Log out</a>
                     </li>
 
                     {% if  request.user.profile.profile_picture.url %}
-                        <li class="d-flex align-items-center"><img
+                        <li class="my-md-auto"><img
                                 class="profile-picture-nav" src="{{ request.user.profile.profile_picture.url }}"
                                 alt="profile"></li>
                     {% endif %}
                 {% else %}
-                    <li class="d-flex align-items-center">
-                        <a href="{% url 'login' %}" class="nav-link">Log in</a></li>
+                    <li class="my-md-auto">
+                        <a href="{% url 'login' %}" class="btn btn-dark ">Log in</a></li>
                 {% endif %}
 
             </ul>
