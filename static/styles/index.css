@@ -20,3 +20,24 @@
     border: 1px solid white;
     border-radius: 50%;
 }
+
+#intro, #logo {
+    background-clip: text;
+    color: transparent;
+}
+
+@media (max-width: 400px) {
+    #intro {
+        font-size: 80px;
+    }
+}
+
+#intro {
+    font-size: 100px;
+    background-image: linear-gradient(to right, rgb(255, 102, 0), rgb(255, 102, 204));
+}
+
+#logo {
+    font-size: 28px;
+    background-image: linear-gradient(to right, rgb(255, 192, 203), rgb(173, 216, 230));
+}

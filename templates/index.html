@@ -4,14 +4,60 @@
 {% endblock %}
 {% block content %}
 
-    <div class="d-flex flex-column gap-4">
-        <h1 class="d-flex justify-content-center text-white fst-italic">Welcome to Litera</h1>
-        <h5 class="d-flex justify-content-center text-white fst-italic">Write a review for your favourite book!</h5>
-        {% if not request.user.is_authenticated %}
-            <div class="d-flex justify-content-center">
-                <button><a href="{% url 'register' %}">Register</a></button>
-            </div>
-        {% endif %}
+    <div class="row mb-5">
+        <div id="intro" class="text-center fst-italic">Welcome to Litera</div>
     </div>
+
+
+    <div class="row row-cols-1 row-cols-lg-2 g-4 pb-3">
+        <div class="col">
+            <div class="p-2 card bg-black bg-opacity-25 text-danger">
+                <div class="card-body">
+                    <div class="position-relative "><h5 class="card-title">Reviews</h5>
+                        <p class="position-absolute top-0 end-0 text-bg-success rounded-pill p-1">Review</p></div>
+                    <p class="card-text">Leave reviews on your favourite book.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-2 card bg-black bg-opacity-25 text-danger">
+                <div class="card-body">
+                    <div class="position-relative "><h5 class="card-title">Create a reading list</h5>
+                        <p class="position-absolute top-0 end-0 text-bg-primary text-white rounded-pill p-1">Reading list</p>
+                    </div>
+                    <p class="card-text">Create your reading list and share it with your friends.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-2 card bg-black bg-opacity-25 text-danger">
+                <div class="card-body">
+                    <div class="position-relative "><h5 class="card-title">Interact with others</h5>
+                        <p class="position-absolute top-0 end-0 text-bg-warning  text-white rounded-pill p-1">Interact</p></div>
+                    <p class="card-text">Mark others' reviews as helpful or not helpful.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-2 card bg-black bg-opacity-25 text-danger">
+                <div class="card-body">
+                    <div class="position-relative "><h5 class="card-title">Edit your profile</h5>
+                        <p class="position-absolute top-0 end-0 text-bg-secondary rounded-pill p-1">Profile</p>
+                    </div>
+                    <p class="card-text">Add a profile picture, your website etc.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {% if not request.user.is_authenticated %}
+        <div class="row mt-4 pb-4">
+            <div class="col-4 mx-auto text-center">
+                <a href="{% url 'register' %}" class="btn btn-lg btn-danger fw-bold">Register</a>
+            </div>
+        </div>
+    {% endif %}
+
 
 {% endblock %}
